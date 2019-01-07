@@ -42,6 +42,8 @@ def addConfigFile(args):
                     addStudent(lineList)
                 elif lineList[0] == 'R':
                     addRoom(lineList)
+
+            dbcon.commit();
             configFile.close()
 
 
@@ -54,8 +56,23 @@ def addStudent(lineList):
 
 
 def addRoom(lineList):
-    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2], 0, 0))
+    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2].strip('\n'), 0, 0))
 
 if __name__ == '__main__':
     addConfigFile(sys.argv)
-    printT()
+
+def print_table(list_of_tuples):
+    for item in list_of_tuples:
+        print(item)
+
+cursor.execute("SELECT * FROM courses")
+print("courses")
+print_table(cursor.fetchall())
+
+cursor.execute("SELECT * FROM classrooms")
+print("classrooms")
+print_table(cursor.fetchall())
+
+cursor.execute("SELECT * FROM students")
+print("students")
+print_table(cursor.fetchall())
