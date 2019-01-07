@@ -2,8 +2,8 @@ import sys
 import os
 import sqlite3
 
-isDataBaseExists = os.path.isfile('classes.db')
-dbcon = sqlite3.connect('classes.db')
+isDataBaseExists = os.path.isfile('schdule.db')
+dbcon = sqlite3.connect('schedule.db')
 
 with dbcon:
     cursor = dbcon.cursor()
@@ -45,7 +45,6 @@ def addConfigFile(args):
             configFile.close()
 
 
-
 def addCourse(lineList):
     cursor.execute("INSERT INTO courses VALUES(?,?,?,?,?,?)", (lineList[1], lineList[2], lineList[3], lineList[4], lineList[5], lineList[6]))
 
@@ -57,19 +56,6 @@ def addStudent(lineList):
 def addRoom(lineList):
     cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2], 0, 0))
 
-
 if __name__ == '__main__':
     addConfigFile(sys.argv)
-
-
-cursor.execute("SELECT * FROM courses")
-for course in cursor.fetchall():
-    print(course)
-
-cursor.execute("SELECT * FROM classrooms")
-for classroom in cursor.fetchall():
-    print(classroom)
-
-cursor.execute("SELECT * FROM students")
-for student in cursor.fetchall():
-    print(student)
+    printT()
