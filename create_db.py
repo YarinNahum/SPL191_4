@@ -2,8 +2,8 @@ import sys
 import os
 import sqlite3
 
-isDataBaseExists = os.path.isfile('classes.db')
-dbcon = sqlite3.connect('classes.db')
+isDataBaseExists = os.path.isfile('schedule.db')
+dbcon = sqlite3.connect('schedule.db')
 
 with dbcon:
     cursor = dbcon.cursor()
@@ -42,6 +42,20 @@ def addConfigFile(args):
                     addStudent(lineList)
                 elif lineList[0] == 'R':
                     addRoom(lineList)
+            cursor.execute("SELECT * FROM courses")
+            print("courses")
+            for course in cursor.fetchall():
+                print(course)
+
+            cursor.execute("SELECT * FROM classrooms")
+            print("classrooms")
+            for classroom in cursor.fetchall():
+                print(classroom)
+
+            print("students")
+            cursor.execute("SELECT * FROM students")
+            for student in cursor.fetchall():
+                print(student)
             configFile.close()
 
 
@@ -55,21 +69,8 @@ def addStudent(lineList):
 
 
 def addRoom(lineList):
-    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2], 0, 0))
+    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2].strip('\n'), 0, 0))
 
 
 if __name__ == '__main__':
     addConfigFile(sys.argv)
-
-
-cursor.execute("SELECT * FROM courses")
-for course in cursor.fetchall():
-    print(course)
-
-cursor.execute("SELECT * FROM classrooms")
-for classroom in cursor.fetchall():
-    print(classroom)
-
-cursor.execute("SELECT * FROM students")
-for student in cursor.fetchall():
-    print(student)
