@@ -1,7 +1,6 @@
 import os
 import sqlite3
 
-isDataBaseExists = os.path.isfile('schedule.db')
 dbcon = sqlite3.connect('schedule.db')
 
 def print_table(list_of_tuples):
@@ -11,7 +10,7 @@ def print_table(list_of_tuples):
 def partOne(cursor, iteration):
     cursor.execute("SELECT * FROM classrooms WHERE current_course_id = 0")
     classroom = cursor.fetchone()
-    cursor.execute("SELECT * FROM courses WHERE class_id = 0")
+    cursor.execute("SELECT * FROM courses WHERE class_id = ?", (str(classroom[0])))
     course = cursor.fetchone()
     if (classroom is not None and course is not None):
         print("(" + str(iteration) + ") " + classroom[1] + ": " + course[1] + " is scheduled to start")
@@ -42,6 +41,7 @@ def partThree(cursor, iteration):
 
 def main():
     iteration=-1
+    isDataBaseExists = os.path.isfile('schedule.db')
     with dbcon:
         cursor = dbcon.cursor()
         cursor.execute("SELECT * FROM courses")
@@ -69,6 +69,9 @@ def main():
 
             cursor.execute("SELECT * FROM courses")
             courses = cursor.fetchall()
+            isDataBaseExists = False
+
+
 
 if __name__=="__main__":
     main()

@@ -2,7 +2,7 @@ import sys
 import os
 import sqlite3
 
-isDataBaseExists = os.path.isfile('schdule.db')
+isDataBaseExists = os.path.isfile('schedule.db')
 dbcon = sqlite3.connect('schedule.db')
 
 with dbcon:
@@ -43,20 +43,20 @@ def addConfigFile(args):
                 elif lineList[0] == 'R':
                     addRoom(lineList)
 
-            dbcon.commit();
+            dbcon.commit()
             configFile.close()
 
 
 def addCourse(lineList):
-    cursor.execute("INSERT INTO courses VALUES(?,?,?,?,?,?)", (lineList[1], lineList[2], lineList[3], lineList[4], lineList[5], lineList[6]))
+    cursor.execute("INSERT INTO courses VALUES(?,?,?,?,?,?)", (lineList[1], lineList[2].strip(' '), lineList[3].strip(' '), lineList[4], lineList[5], lineList[6]))
 
 
 def addStudent(lineList):
-    cursor.execute("INSERT INTO students VALUES(?,?)", (lineList[1], lineList[2]))
+    cursor.execute("INSERT INTO students VALUES(?,?)", (lineList[1].strip(' '), lineList[2]))
 
 
 def addRoom(lineList):
-    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1], lineList[2].strip('\n'), 0, 0))
+    cursor.execute("INSERT INTO classrooms VALUES(?,?,?,?)", (lineList[1].strip(' '), lineList[2].strip('\n').strip(' '), 0, 0))
 
 if __name__ == '__main__':
     addConfigFile(sys.argv)
